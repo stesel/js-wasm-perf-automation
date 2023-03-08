@@ -47,7 +47,7 @@ export async function createChart(version: "js" | "wasm", csv: string) {
     }
   );
 
-  const name = `${labelY}-${version}-${Date.now()}.svg`;
+  const name = `${version}-${Date.now()}.svg`;
 
   await writeFile(
     `./html-report/${name}`,
