@@ -19,7 +19,7 @@ export async function createChart({
   const labelY = labels?.at(1);
 
   const chart = new Chart(
-    createCanvas(500, 500, "svg").getContext(
+    createCanvas(1500, 600, "svg").getContext(
       "2d"
     ) as unknown as CanvasRenderingContext2D,
     {
