@@ -5,8 +5,6 @@ import { measureCPU } from "./measures/cpu";
 import { measureFPS } from "./measures/fps";
 import { measureMemory } from "./measures/memory";
 
-import { readFile } from "fs/promises";
-
 describe("js-wasm-performance", () => {
   describe.each([
     ["cpu", measureCPU],
@@ -16,11 +14,9 @@ describe("js-wasm-performance", () => {
     it.each(["js", "wasm"] as const)(
       "%s",
       async (version) => {
-        // const csv = await measure(version);
+        const csv = await measure(version);
 
-        const csv = await readFile("./js-cpu.csv", "utf-8");
-
-        const chartName = await createChart(version, csv);
+        const chartName = await createChart({measureName, version, csv});
 
         addAttach({
           attach: `${chartName}`,

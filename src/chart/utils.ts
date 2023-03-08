@@ -2,7 +2,15 @@ import { createCanvas } from "canvas";
 import Chart from "chart.js/auto";
 import { writeFile } from "fs/promises";
 
-export async function createChart(version: "js" | "wasm", csv: string) {
+export async function createChart({
+  measureName,
+  version,
+  csv,
+}: {
+  measureName: string;
+  version: string;
+  csv: string;
+}) {
   const rows = csv.split("\n").map((row) => row.split(","));
   const labels = rows.slice(0, 1).at(0);
   const values = rows.slice(1).filter((value) => value.length > 1);
@@ -47,7 +55,7 @@ export async function createChart(version: "js" | "wasm", csv: string) {
     }
   );
 
-  const name = `${version}-${Date.now()}.svg`;
+  const name = `${measureName}-${version}-${Date.now()}.svg`;
 
   await writeFile(
     `./html-report/${name}`,
