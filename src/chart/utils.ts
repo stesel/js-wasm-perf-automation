@@ -47,10 +47,10 @@ export async function createChart(version: "js" | "wasm", csv: string) {
     }
   );
 
-  const name = `./html-report/jest-html-reporters-attach/${labelY}-${version}-${Date.now()}.svg`;
+  const name = `${labelY}-${version}-${Date.now()}.svg`;
 
   await writeFile(
-    name,
+    `./html-report/jest-html-reporters-attach/${name}`,
     chart.toBase64Image().replace("data:image/png;base64,", ""),
     { encoding: "base64" }
   );
