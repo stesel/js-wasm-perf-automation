@@ -50,7 +50,7 @@ export async function createChart(version: "js" | "wasm", csv: string) {
   const name = `${labelY}-${version}-${Date.now()}.svg`;
 
   await writeFile(
-    `./html-report/jest-html-reporters-attach/${name}`,
+    `./html-report/${name}`,
     chart.toBase64Image().replace("data:image/png;base64,", ""),
     { encoding: "base64" }
   );
