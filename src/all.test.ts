@@ -8,10 +8,10 @@ import { measureMemory } from "./measures/memory";
 describe("js-wasm-performance", () => {
   describe.each([
     ["cpu", measureCPU],
-    // ["fps", measureFPS],
-    // ["memory", measureMemory],
+    ["fps", measureFPS],
+    ["memory", measureMemory],
   ])("%s", (measureName, measure) => {
-    it.each(["js" /*, "wasm"*/] as const)(
+    it.each(["js", "wasm"] as const)(
       `${measureName} for %s`,
       async (version) => {
         const csv = await measure(version);
