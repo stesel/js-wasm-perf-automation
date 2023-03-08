@@ -1,6 +1,3 @@
-import {resolve} from "path";
-import {readFile} from "fs/promises";
-
 import { addAttach } from "jest-html-reporters/helper";
 import { createChart } from "./chart/utils";
 
@@ -17,8 +14,7 @@ describe("js-wasm-performance", () => {
     it.each(["js" /*, "wasm"*/] as const)(
       `${measureName} for %s`,
       async (version) => {
-        // const csv = await measure(version);
-        const csv = await readFile(resolve("./dist/js-cpu.csv"), "utf-8");
+        const csv = await measure(version);
 
         const chartName = await createChart(version, csv);
 
