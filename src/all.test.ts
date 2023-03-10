@@ -1,5 +1,5 @@
 import { addAttach } from "jest-html-reporters/helper";
-import { createChart } from "./chart/utils";
+import { createChart } from "./chart/createChart";
 
 import { measureCPU } from "./measures/cpu";
 import { measureFPS } from "./measures/fps";
@@ -14,16 +14,16 @@ describe("js-wasm-performance", () => {
     it.each(["js", "wasm"] as const)(
       "%s",
       async (version) => {
-        const csv = await measure(version);
+        const measurement = await measure(version);
 
-        const chartName = await createChart({measureName, version, csv});
+        const chartName = await createChart(measurement);
 
         addAttach({
           attach: `${chartName}`,
           description: `${measureName} dependency on number of particles for ${version}`,
         });
 
-        expect(csv).toBeDefined();
+        expect(measurement).toBeDefined();
       }
     );
   });

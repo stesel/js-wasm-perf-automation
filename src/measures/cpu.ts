@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import * as fs from "fs/promises";
 import {
   CPU_TIMEOUT,
   MAX_PARTICLES,
@@ -12,50 +11,49 @@ import {
   getUrl,
   waitFor,
 } from "./utils";
+import { Measurement, Metric, Version } from "./types";
 
-export async function measureCPU(version: "js" | "wasm") {
-  let csv = "Particles,CPU(%)\n";
+export async function measureCPU(version: Version): Promise<Measurement> {
+  const metrics: Metric[] = [];
 
-  async function runBrowser() {
-    for (
-      let particles = MIN_PARTICLES;
-      particles <= MAX_PARTICLES;
-      particles += PARTICLES_STEP
-    ) {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await page.goto(getUrl(version, particles));
+  for (
+    let particles = MIN_PARTICLES;
+    particles <= MAX_PARTICLES;
+    particles += PARTICLES_STEP
+  ) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(getUrl(version, particles));
 
-      const cdp = await page.target().createCDPSession();
+    const cdp = await page.target().createCDPSession();
 
-      await cdp.send("Performance.enable", {
-        timeDomain: "timeTicks",
-      });
+    await cdp.send("Performance.enable", {
+      timeDomain: "timeTicks",
+    });
 
-      const { timestamp: initialTimestamp } = getActiveTime(
-        await cdp.send("Performance.getMetrics")
-      );
+    const { timestamp: initialTimestamp } = getActiveTime(
+      await cdp.send("Performance.getMetrics")
+    );
 
-      await waitFor(CPU_TIMEOUT);
+    await waitFor(CPU_TIMEOUT);
 
-      const { timestamp, activeTime } = getActiveTime(
-        await cdp.send("Performance.getMetrics")
-      );
+    const { timestamp, activeTime } = getActiveTime(
+      await cdp.send("Performance.getMetrics")
+    );
 
-      const cpu = calculateCPUPercentage(
-        Math.min(activeTime / (timestamp - initialTimestamp), 1)
-      );
+    const cpu = calculateCPUPercentage(
+      Math.min(activeTime / (timestamp - initialTimestamp), 1)
+    );
 
-      csv += `${particles},${cpu}\n`;
+    metrics.push({ particles: particles, value: cpu });
 
-      await browser.close();
-    }
+    await browser.close();
   }
 
-  await runBrowser();
-
-  await fs.mkdir("./dist", {}).catch(() => {});
-  await fs.writeFile(`./dist/${version}-cpu.csv`, csv);
-
-  return csv;
+  return {
+    version: version,
+    name: "cpu",
+    units: "CPU(%)",
+    metrics: metrics,
+  };
 }

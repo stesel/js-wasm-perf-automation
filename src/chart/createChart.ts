@@ -1,22 +1,27 @@
 import { createCanvas } from "canvas";
 import Chart from "chart.js/auto";
 import { writeFile } from "fs/promises";
+import { Measurement } from "../measures/types";
+
+interface ChartData {
+  labels: number[];
+  data: number[];
+}
 
 export async function createChart({
-  measureName,
   version,
-  csv,
-}: {
-  measureName: string;
-  version: string;
-  csv: string;
-}) {
-  const rows = csv.split("\n").map((row) => row.split(","));
-  const labels = rows.slice(0, 1).at(0);
-  const values = rows.slice(1).filter((value) => value.length > 1);
+  name,
+  units,
+  metrics,
+}: Measurement) {
+  const chartData = metrics.reduce<ChartData>((result, metric) => {
+    result.labels.push(metric.particles);
+    result.data.push(metric.value);
+    return result;
+  }, { labels: [], data: [] });
 
-  const labelX = labels?.at(0);
-  const labelY = labels?.at(1);
+  const labelX = units;
+  const labelY = "Particles";
 
   const chart = new Chart(
     createCanvas(1500, 600, "svg").getContext(
@@ -42,26 +47,27 @@ export async function createChart({
         },
       },
       data: {
-        labels: values.map((value) => value.at(0)),
+        labels: chartData.labels,
         datasets: [
           {
             label: version.toUpperCase(),
-            data: values.map((value) => value.at(1)),
+            data: chartData.data,
             fill: false,
             borderColor: "rgb(75, 192, 192)",
+            tension: 0.4,
           },
         ],
       },
     }
   );
 
-  const name = `${measureName}-${version}-${Date.now()}.svg`;
+  const chartName = `${name}-${version}-${Date.now()}.svg`;
 
   await writeFile(
-    `./html-report/${name}`,
+    `./html-report/${chartName}`,
     chart.toBase64Image().replace("data:image/png;base64,", ""),
     { encoding: "base64" }
   );
 
-  return name;
+  return chartName;
 }
