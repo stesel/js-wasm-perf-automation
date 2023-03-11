@@ -21,4 +21,5 @@ export default {
       },
     ],
   ],
+  globalSetup: "./jest.info.ts",
 };

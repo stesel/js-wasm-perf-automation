@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
   },
-  "exclude": ["jest.config.ts"]
+  "exclude": ["jest.config.ts", "jest.info.ts"]
 }
