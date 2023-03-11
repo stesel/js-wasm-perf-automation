@@ -5,7 +5,7 @@ import { measureCPU } from "./measures/cpu";
 import { measureFPS } from "./measures/fps";
 import { measureMemory } from "./measures/memory";
 
-describe.skip("js-wasm-performance", () => {
+describe("js-wasm-performance", () => {
   describe.each([
     ["cpu", measureCPU],
     ["fps", measureFPS],
@@ -23,11 +23,5 @@ describe.skip("js-wasm-performance", () => {
 
       expect(measurement).toBeDefined();
     });
-  });
-});
-
-describe("test desc", () => {
-  it("test case", () => {
-    expect(2 + 2).toBe(4);
   });
 });

@@ -20,8 +20,8 @@ export async function createChart({
     return result;
   }, { labels: [], data: [] });
 
-  const labelX = units;
-  const labelY = "Particles";
+  const labelX = "Particles";
+  const labelY = units;
 
   const chart = new Chart(
     createCanvas(1500, 600, "svg").getContext(
