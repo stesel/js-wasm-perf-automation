@@ -31,9 +31,8 @@ export async function measureCPU(version: Version): Promise<Measurement> {
       timeDomain: "timeTicks",
     });
 
-    const { timestamp: initialTimestamp } = getActiveTime(
-      await cdp.send("Performance.getMetrics")
-    );
+    const { timestamp: initialTimestamp, activeTime: initialActiveTime } =
+      getActiveTime(await cdp.send("Performance.getMetrics"));
 
     await waitFor(CPU_TIMEOUT);
 
@@ -42,7 +41,10 @@ export async function measureCPU(version: Version): Promise<Measurement> {
     );
 
     const cpu = calculateCPUPercentage(
-      Math.min(activeTime / (timestamp - initialTimestamp), 1)
+      Math.min(
+        (activeTime - initialActiveTime) / (timestamp - initialTimestamp),
+        1
+      )
     );
 
     metrics.push({ particles: particles, value: cpu });

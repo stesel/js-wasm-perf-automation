@@ -27,13 +27,9 @@ export function getActiveTime(
 ): {
   timestamp: number;
   activeTime: number;
-} {
-  const activeTime = metrics.metrics
-    .filter((metric) => metric.name.includes("Duration"))
-    .map((metric) => metric.value)
-    .reduce((total, current) => total + current);
+  } {
   return {
     timestamp: metrics.metrics.find((metric) => metric.name === "Timestamp")?.value || 0,
-    activeTime,
+    activeTime: metrics.metrics.find((metric) => metric.name === "ProcessTime")?.value || 0,
   };
 }
