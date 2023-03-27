@@ -30,6 +30,6 @@ export function getActiveTime(
   } {
   return {
     timestamp: metrics.metrics.find((metric) => metric.name === "Timestamp")?.value || 0,
-    activeTime: metrics.metrics.find((metric) => metric.name === "ProcessTime")?.value || 0,
+    activeTime: metrics.metrics.find((metric) => metric.name === "TaskDuration")?.value || 0,
   };
 }
