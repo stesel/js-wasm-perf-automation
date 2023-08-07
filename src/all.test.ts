@@ -11,7 +11,7 @@ describe("js-wasm-performance", () => {
     ["fps", measureFPS],
     ["memory", measureMemory],
   ])("%s", (measureName, measure) => {
-    it.each(["js", "wasm"] as const)("%s", async (version) => {
+    it.each(["js", "wasm", "webgpu"] as const)("%s", async (version) => {
       const measurement = await measure(version);
 
       const chartName = await createChart(measurement);

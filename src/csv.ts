@@ -5,7 +5,7 @@ import { measureMemory } from "./measures/memory";
 import { Version } from "./measures/types";
 
 [measureCPU, measureFPS, measureMemory].forEach((measure) => {
-  (["js", "wasm"] as Version[]).forEach(async (version) => {
+  (["js", "wasm", "webgpu"] as Version[]).forEach(async (version) => {
     const measurement = await measure(version);
     await writeToCSV(measurement);
   });

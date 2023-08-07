@@ -23,7 +23,7 @@ export async function measureFPS(version: Version): Promise<Measurement> {
     particles <= MAX_PARTICLES;
     particles += PARTICLES_STEP
   ) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     await page.goto(getUrl(version, particles));
 

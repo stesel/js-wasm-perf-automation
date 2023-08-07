@@ -1,7 +1,8 @@
 import type { Protocol } from "puppeteer";
 import { BASE_URL } from "./consts";
+import { Version } from "./types";
 
-export function getUrl(version: "js" | "wasm", particles: number) {
+export function getUrl(version: Version, particles: number) {
   return `${BASE_URL}${version}/?particles=${particles}`;
 }
 

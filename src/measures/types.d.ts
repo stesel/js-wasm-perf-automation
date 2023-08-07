@@ -1,4 +1,4 @@
-export type Version = "js" | "wasm";
+export type Version = "js" | "wasm" | "webgpu";
 export type MeasureName = "cpu" | "fps" | "memory";
 export type MeasureUnits = "CPU(%)" | "FPS" | "HEAP(kB)";
 
