@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import { getUrl, waitFor } from "./utils";
 import {
   BYTES_IN_KBYTE,
+  HEADLESS_MODE,
   MAX_PARTICLES,
   MEMORY_TIMEOUT,
   MIN_PARTICLES,
@@ -17,7 +18,7 @@ export async function measureMemory(version: Version): Promise<Measurement> {
     particles <= MAX_PARTICLES;
     particles += PARTICLES_STEP
   ) {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: HEADLESS_MODE });
     const page = await browser.newPage();
     await page.goto(getUrl(version, particles));
     await waitFor(MEMORY_TIMEOUT);

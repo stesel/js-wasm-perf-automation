@@ -10,8 +10,8 @@ export function waitFor(ms: number) {
   return new Promise((_) => setTimeout(_, ms));
 }
 
-export function roundNumber(fps: number) {
-  return Math.round(fps * 100) / 100;
+export function roundNumber(value: number) {
+  return Math.round(value * 100) / 100;
 }
 
 export function calculateCPUPercentage(cpu: number) {

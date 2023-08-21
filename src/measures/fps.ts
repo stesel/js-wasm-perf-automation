@@ -3,6 +3,7 @@ import { calculateFPS, getUrl, waitFor } from "./utils";
 import {
   FPS_COUNT,
   FPS_TIMEOUT,
+  HEADLESS_MODE,
   MAX_PARTICLES,
   MIN_PARTICLES,
   PARTICLES_STEP,
@@ -23,7 +24,7 @@ export async function measureFPS(version: Version): Promise<Measurement> {
     particles <= MAX_PARTICLES;
     particles += PARTICLES_STEP
   ) {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: HEADLESS_MODE });
     const page = await browser.newPage();
     await page.goto(getUrl(version, particles));
 
