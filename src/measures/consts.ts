@@ -1,11 +1,9 @@
-import { BrowserLaunchArgumentOptions } from "puppeteer";
+import { LaunchOptions } from "puppeteer";
 
 export const BASE_URL = "https://stesel.github.io/wasm-canvas-perf/";
 
-export const HEADLESS_MODE: BrowserLaunchArgumentOptions["headless"] = process
-  .env.GITHUB_ACTIONS
-  ? "new"
-  : false;
+export const HEADLESS_MODE: LaunchOptions["headless"] =
+  !!process.env.GITHUB_ACTIONS;
 
 export const CPU_TIMEOUT = 5000;
 export const CPU_COUNT = 5;
