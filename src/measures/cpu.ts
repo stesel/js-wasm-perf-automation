@@ -26,7 +26,7 @@ export async function measureCPU(version: Version): Promise<Measurement> {
     const page = await browser.newPage();
     await page.goto(getUrl(version, particles));
 
-    const cdp = await page.target().createCDPSession();
+    const cdp = await page.createCDPSession();
 
     await cdp.send("Performance.enable", {
       timeDomain: "timeTicks",
